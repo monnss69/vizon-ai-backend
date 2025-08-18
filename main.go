@@ -2,9 +2,13 @@ package main
 
 import (
 	"log"
+	"net/http"
+	"os"
 
 	"vizon-ai-backend/internal/database"
+	"vizon-ai-backend/internal/routes"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
 )
 
@@ -27,6 +31,10 @@ func main() {
 		}
 	}()
 
-	// Your application logic here
-	log.Println("Application started successfully")
+	r := chi.NewRouter()
+	routes.SetupRoutes(r)
+	port := os.Getenv("PORT")
+
+	// Listen on port
+	http.ListenAndServe(port, r)
 }
